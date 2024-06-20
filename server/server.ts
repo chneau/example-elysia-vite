@@ -27,7 +27,13 @@ const client = new PrismaClient();
 
 const app = new Elysia()
 	.use(serverTiming())
-	.use(cors({ origin: "localhost:5173", allowedHeaders: ["Content-Type"] }))
+	.use(
+		cors({
+			origin: "localhost:5173",
+			allowedHeaders: ["Content-Type"],
+			methods: ["GET", "POST", "PUT", "DELETE"],
+		}),
+	)
 	.use(compression())
 	.use(jwt({ secret: "not_secret" }))
 	.get("/logout", (req) => {
@@ -41,7 +47,7 @@ const app = new Elysia()
 			if (!req.cookie.auth) return error(401, "Unauthorized");
 			const user = await client.user.findUnique({
 				where: { username: req.body.username },
-				select: { passwordHash: true },
+				select: { id: true, passwordHash: true, role: true },
 			});
 			if (!user) return error(401, "Unauthorized");
 			if (user.passwordHash !== req.body.password)
@@ -49,7 +55,12 @@ const app = new Elysia()
 
 			const exp = Date.now() + 1000 * 60 * 60; // 1 hour
 			req.cookie.auth.set({
-				value: await req.jwt.sign({ name: req.body.username, exp }),
+				value: await req.jwt.sign({
+					name: req.body.username,
+					id: user.id,
+					role: user.role,
+					exp,
+				}),
 				httpOnly: true,
 				expires: new Date(exp),
 				secure: true,
@@ -69,19 +80,18 @@ const app = new Elysia()
 		async (req) => {
 			if (!req.cookie.auth) return error(401, "Unauthorized");
 			const profile = await req.jwt.verify(req.cookie.auth.value);
-			if (!profile) return error(401, "Unauthorized");
-			return await client.post.create({ data: req.body });
+			if (!profile || typeof profile.id !== "number")
+				return error(401, "Unauthorized");
+			return await client.post.create({
+				data: { ...req.body, author: { connect: { id: profile.id } } },
+			});
 		},
-		{
-			body: PostInputCreate,
-		},
+		{ body: t.Omit(PostInputCreate, ["author"]) },
 	)
 	.get(
 		"/posts/:id",
 		(req) => client.post.findUnique({ where: { id: req.params.id } }),
-		{
-			params: t.Object({ id: t.Number() }),
-		},
+		{ params: t.Object({ id: t.Numeric() }) },
 	)
 	.put(
 		"/posts/:id",
@@ -91,9 +101,20 @@ const app = new Elysia()
 				data: req.body,
 			}),
 		{
-			params: t.Object({ id: t.Number() }),
+			params: t.Object({ id: t.Numeric() }),
 			body: PostInputUpdate,
 		},
+	)
+	.delete(
+		"/posts/:id",
+		async (req) => {
+			if (!req.cookie.auth) return error(401, "Unauthorized");
+			const profile = await req.jwt.verify(req.cookie.auth.value);
+			if (!profile || profile.role !== "root")
+				return error(401, "Unauthorized");
+			return await client.post.delete({ where: { id: req.params.id } });
+		},
+		{ params: t.Object({ id: t.Numeric() }) },
 	)
 	.listen(port);
 

@@ -33,7 +33,20 @@ export const useMutationCreatePost = () =>
 		mutationKey: ["posts", "create"],
 		mutationFn: (body: Parameters<typeof client.posts.post>[0]) =>
 			client.posts.post(body).then((x) => x.data),
-		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
+		onSuccess: (x) =>
+			x && queryClient.invalidateQueries({ queryKey: ["posts"] }),
+	});
+
+export const useMutationDeletePost = () =>
+	useMutation({
+		mutationKey: ["posts", "delete"],
+		mutationFn: (id: number) =>
+			client
+				.posts({ id })
+				.delete()
+				.then((x) => x.data),
+		onSuccess: (x) =>
+			x && queryClient.invalidateQueries({ queryKey: ["posts"] }),
 	});
 
 export const useMutationLogin = () =>

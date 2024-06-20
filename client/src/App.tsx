@@ -1,6 +1,7 @@
 import { useCounter } from "react-use";
 import {
 	useMutationCreatePost,
+	useMutationDeletePost,
 	useMutationLogin,
 	useMutationLogout,
 	useQueryPosts,
@@ -12,6 +13,7 @@ export const App = () => {
 	const { data: posts } = useQueryPosts();
 	const { data: users } = useQueryUsers();
 	const createPostMutation = useMutationCreatePost();
+	const deletePostMutation = useMutationDeletePost();
 	const loginMutation = useMutationLogin();
 	const logoutMutation = useMutationLogout();
 	const createRandomPost = () => {
@@ -20,7 +22,6 @@ export const App = () => {
 			title: "Hello, World!",
 			content: "This is a post.",
 			published: true,
-			author: { connect: { id: users[0].id } },
 		});
 	};
 	const loginAs = (username: string) => {
@@ -48,6 +49,12 @@ export const App = () => {
 						{post.title} ({post.id})
 					</h2>
 					<p>{post.content}</p>
+					<button
+						type="button"
+						onClick={() => deletePostMutation.mutate(post.id)}
+					>
+						Delete
+					</button>
 				</div>
 			))}
 		</>
