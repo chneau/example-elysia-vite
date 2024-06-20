@@ -64,9 +64,18 @@ const app = new Elysia()
 		client.user.findMany({ select: { id: true, username: true, role: true } }),
 	)
 	.get("/posts", () => client.post.findMany())
-	.post("/posts", (req) => client.post.create({ data: req.body }), {
-		body: PostInputCreate,
-	})
+	.post(
+		"/posts",
+		async (req) => {
+			if (!req.cookie.auth) return error(401, "Unauthorized");
+			const profile = await req.jwt.verify(req.cookie.auth.value);
+			if (!profile) return error(401, "Unauthorized");
+			return await client.post.create({ data: req.body });
+		},
+		{
+			body: PostInputCreate,
+		},
+	)
 	.get(
 		"/posts/:id",
 		(req) => client.post.findUnique({ where: { id: req.params.id } }),

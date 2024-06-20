@@ -30,6 +30,7 @@ export const useQueryPosts = () =>
 
 export const useMutationCreatePost = () =>
 	useMutation({
+		mutationKey: ["posts", "create"],
 		mutationFn: (body: Parameters<typeof client.posts.post>[0]) =>
 			client.posts.post(body).then((x) => x.data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
@@ -37,9 +38,13 @@ export const useMutationCreatePost = () =>
 
 export const useMutationLogin = () =>
 	useMutation({
+		mutationKey: ["auth", "login"],
 		mutationFn: (body: Parameters<typeof client.login.post>[0]) =>
 			client.login.post(body).then((x) => x.data),
 	});
 
 export const useMutationLogout = () =>
-	useMutation({ mutationFn: () => client.logout.get().then((x) => x.data) });
+	useMutation({
+		mutationKey: ["auth", "logout"],
+		mutationFn: () => client.logout.get().then((x) => x.data),
+	});
