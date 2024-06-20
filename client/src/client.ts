@@ -30,8 +30,5 @@ export const useMutationCreatePost = () =>
 	useMutation({
 		mutationFn: (body: Parameters<typeof client.posts.post>[0]) =>
 			client.posts.post(body).then((x) => x.data),
-		onSuccess: () => {
-			console.log("Post created");
-			return queryClient.invalidateQueries({ queryKey: ["posts"] });
-		},
+		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
 	});
