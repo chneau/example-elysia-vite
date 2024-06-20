@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"start": "bun run dev",
+		"dev": "bun run --filter '*' dev",
+		"upgrade": "bun run --filter '*' upgrade",
+		"check": "bun run --filter '*' check",
+		"lint": "bun run --filter '*' lint",
+		"gen": "bun run --filter '*' gen"
+	}
+}
