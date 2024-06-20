@@ -2,6 +2,7 @@ import { treaty } from "@elysiajs/eden";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Server } from "../../server/server";
 import { queryClient } from "./queryClient";
+import { useSyncMutation } from "./useSyncMutation";
 
 const client = treaty<Server>("localhost:3000", {
 	fetch: { credentials: "include" },
@@ -38,7 +39,7 @@ export const useMutationCreatePost = () =>
 	});
 
 export const useMutationDeletePost = () =>
-	useMutation({
+	useSyncMutation({
 		mutationKey: ["posts", "delete"],
 		mutationFn: (id: number) =>
 			client
