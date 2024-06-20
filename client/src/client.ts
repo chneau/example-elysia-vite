@@ -3,7 +3,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Server } from "../../server/server";
 import { queryClient } from "./queryClient";
 
-const client = treaty<Server>("localhost:3000");
+const client = treaty<Server>("localhost:3000", {
+	fetch: { credentials: "include" },
+});
 
 export const useQueryIndex = () =>
 	useQuery({
@@ -32,3 +34,12 @@ export const useMutationCreatePost = () =>
 			client.posts.post(body).then((x) => x.data),
 		onSuccess: () => queryClient.invalidateQueries({ queryKey: ["posts"] }),
 	});
+
+export const useMutationLogin = () =>
+	useMutation({
+		mutationFn: (body: Parameters<typeof client.login.post>[0]) =>
+			client.login.post(body).then((x) => x.data),
+	});
+
+export const useMutationLogout = () =>
+	useMutation({ mutationFn: () => client.logout.get().then((x) => x.data) });

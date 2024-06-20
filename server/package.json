@@ -1,23 +1,24 @@
 {
-	"name": "server",
-	"type": "module",
-	"scripts": {
-		"dev": "bun --watch server.ts",
-		"upgrade": "npm-check-updates --upgrade --install=always --packageManager=bun",
-		"check": "biome check --write --unsafe .",
-		"lint": "tsc --noEmit",
-		"gen": "prisma generate; bun run check; prisma db push"
-	},
-	"dependencies": {
-		"@elysiajs/cors": "^1.0.2",
-		"@elysiajs/server-timing": "^1.0.2",
-		"@prisma/client": "^5.15.1",
-		"elysia": "^1.0.24",
-		"prisma": "^5.15.1"
-	},
-	"devDependencies": {
-		"@types/bun": "^1.1.5",
-		"prismabox": "^1.1.2",
-		"typescript": "^5.5.2"
-	}
+  "name": "server",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch server.ts",
+    "upgrade": "npm-check-updates --upgrade --install=always --packageManager=bun",
+    "check": "biome check --write --unsafe .",
+    "lint": "tsc --noEmit",
+    "gen": "prisma generate; bun run check; prisma db push"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.0.2",
+    "@elysiajs/jwt": "^1.0.2",
+    "@elysiajs/server-timing": "^1.0.2",
+    "@prisma/client": "^5.15.1",
+    "elysia": "^1.0.24",
+    "prisma": "^5.15.1"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.5",
+    "prismabox": "^1.1.2",
+    "typescript": "^5.5.2"
+  }
 }

@@ -1,11 +1,19 @@
 import { useCounter } from "react-use";
-import { useMutationCreatePost, useQueryPosts, useQueryUsers } from "./client";
+import {
+	useMutationCreatePost,
+	useMutationLogin,
+	useMutationLogout,
+	useQueryPosts,
+	useQueryUsers,
+} from "./client";
 
 export const App = () => {
 	const [count, { inc }] = useCounter();
 	const { data: posts } = useQueryPosts();
 	const { data: users } = useQueryUsers();
 	const createPostMutation = useMutationCreatePost();
+	const loginMutation = useMutationLogin();
+	const logoutMutation = useMutationLogout();
 	const createRandomPost = () => {
 		if (!users[0]) return;
 		createPostMutation.mutate({
@@ -15,6 +23,9 @@ export const App = () => {
 			author: { connect: { id: users[0].id } },
 		});
 	};
+	const loginAs = (username: string) => {
+		loginMutation.mutate({ username, password: username });
+	};
 	return (
 		<>
 			<button type="button" onClick={() => inc()}>
@@ -22,6 +33,12 @@ export const App = () => {
 			</button>
 			<button type="button" onClick={createRandomPost}>
 				Create random post
+			</button>
+			<button type="button" onClick={() => loginAs("root")}>
+				Login as root
+			</button>
+			<button type="button" onClick={() => logoutMutation.mutate()}>
+				Logout
 			</button>
 			<br />
 			User IDs: {users.map((x) => x.id).join(", ")}
