@@ -6,7 +6,7 @@
 		"upgrade": "npm-check-updates --upgrade --install=always --packageManager=bun",
 		"check": "biome check --write --unsafe .",
 		"lint": "tsc --noEmit",
-		"gen": "prisma generate"
+		"gen": "prisma generate; bun run check; prisma db push"
 	},
 	"dependencies": {
 		"@elysiajs/cors": "^1.0.2",
@@ -17,6 +17,7 @@
 	},
 	"devDependencies": {
 		"@types/bun": "^1.1.5",
+		"prismabox": "^1.1.2",
 		"typescript": "^5.5.2"
 	}
 }
