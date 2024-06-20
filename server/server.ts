@@ -11,22 +11,17 @@ console.log(`Server: http://localhost:${port}`);
 const client = new PrismaClient();
 
 (async () => {
-	const user = await client.user.findFirst({
-		select: { id: true, username: true },
-	});
-	console.log({ user });
-	if (!user) {
-		console.log("Creating user");
-		await client.user.create({
-			data: {
-				username: "username",
-				passwordHash: "passwordHash",
-				role: "role",
-			},
-		});
-	}
-	console.log("Deleting all posts");
+	console.log("Deleting all");
 	await client.post.deleteMany();
+	await client.user.deleteMany();
+	console.log("Creating user");
+	await client.user.create({
+		data: {
+			username: "username",
+			passwordHash: "passwordHash",
+			role: "role",
+		},
+	});
 })();
 
 const app = new Elysia()
@@ -34,6 +29,9 @@ const app = new Elysia()
 	.use(cors())
 	.use(compression())
 	.get("/", () => "Hello, World!")
+	.get("/users", () =>
+		client.user.findMany({ select: { id: true, username: true, role: true } }),
+	)
 	.get("/posts", () => client.post.findMany())
 	.post("/posts", (req) => client.post.create({ data: req.body }), {
 		body: PostInputCreate,

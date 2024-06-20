@@ -12,6 +12,13 @@ export const useQueryIndex = () =>
 		initialData: "",
 	});
 
+export const useQueryUsers = () =>
+	useQuery({
+		queryKey: ["users"],
+		queryFn: () => client.users.get().then((x) => x.data ?? []),
+		initialData: [],
+	});
+
 export const useQueryPosts = () =>
 	useQuery({
 		queryKey: ["posts"],
