@@ -1,5 +1,7 @@
 import { treaty } from "@elysiajs/eden";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLocalStorage } from "react-use";
+import superjson from "superjson";
 import type { Server } from "../../server/server";
 import { queryClient } from "./queryClient";
 import { useSyncMutation } from "./useSyncMutation";
@@ -50,15 +52,36 @@ export const useMutationDeletePost = () =>
 			x && queryClient.invalidateQueries({ queryKey: ["posts"] }),
 	});
 
-export const useMutationLogin = () =>
-	useMutation({
+type LoginBody = Parameters<typeof client.login.post>[0];
+type LoginData = NonNullable<
+	Awaited<ReturnType<typeof client.login.post>>["data"]
+>;
+export const useMutationAuth = () => {
+	const [auth, setAuth] = useLocalStorage<LoginData | null>("auth", null, {
+		raw: false,
+		deserializer: superjson.parse,
+		serializer: superjson.stringify,
+	});
+	const loginMutation = useMutation({
 		mutationKey: ["auth", "login"],
-		mutationFn: (body: Parameters<typeof client.login.post>[0]) =>
-			client.login.post(body).then((x) => x.data),
+		mutationFn: (body: LoginBody) =>
+			client.login.post(body).then((x) => {
+				setAuth(x.data);
+				return x.data;
+			}),
 	});
 
-export const useMutationLogout = () =>
-	useMutation({
+	const logoutMutation = useMutation({
 		mutationKey: ["auth", "logout"],
-		mutationFn: () => client.logout.get().then((x) => x.data),
+		mutationFn: () =>
+			client.logout.get().then((x) => {
+				setAuth(null);
+				return x.data;
+			}),
 	});
+	return {
+		auth,
+		login: loginMutation.mutate,
+		logout: logoutMutation.mutate,
+	};
+};

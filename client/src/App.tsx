@@ -1,23 +1,18 @@
 import { useCounter } from "react-use";
 import {
+	useMutationAuth,
 	useMutationCreatePost,
 	useMutationDeletePost,
-	useMutationLogin,
-	useMutationLogout,
 	useQueryPosts,
-	useQueryUsers,
 } from "./client";
 
 export const App = () => {
 	const [count, { inc }] = useCounter();
 	const { data: posts } = useQueryPosts();
-	const { data: users } = useQueryUsers();
 	const createPostMutation = useMutationCreatePost();
 	const deletePostMutation = useMutationDeletePost();
-	const loginMutation = useMutationLogin();
-	const logoutMutation = useMutationLogout();
+	const { auth, login, logout } = useMutationAuth();
 	const createRandomPost = () => {
-		if (!users[0]) return;
 		createPostMutation.mutate({
 			title: "Hello, World!",
 			content: "This is a post.",
@@ -25,10 +20,11 @@ export const App = () => {
 		});
 	};
 	const loginAs = (username: string) => {
-		loginMutation.mutate({ username, password: username });
+		login({ username, password: username });
 	};
 	return (
 		<>
+			<pre>auth: {JSON.stringify(auth, null, 2)}</pre>
 			<button type="button" onClick={() => inc()}>
 				count is {count}
 			</button>
@@ -38,11 +34,10 @@ export const App = () => {
 			<button type="button" onClick={() => loginAs("root")}>
 				Login as root
 			</button>
-			<button type="button" onClick={() => logoutMutation.mutate()}>
+			<button type="button" onClick={() => logout()}>
 				Logout
 			</button>
 			<br />
-			User IDs: {users.map((x) => x.id).join(", ")}
 			{posts.map((post) => (
 				<div key={post.id}>
 					<h2>

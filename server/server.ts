@@ -13,11 +13,19 @@ const client = new PrismaClient();
 	await client.post.deleteMany();
 	await client.user.deleteMany();
 	console.log("Creating user");
-	await client.user.create({
+	const user = await client.user.create({
 		data: {
 			username: "root",
 			passwordHash: "root",
 			role: "root",
+		},
+	});
+	await client.post.create({
+		data: {
+			title: "The first post",
+			content: "This is the first post.",
+			published: true,
+			authorId: user.id,
 		},
 	});
 })();
@@ -44,7 +52,7 @@ const app = new Elysia()
 			if (!req.cookie.auth) return error(401, "Unauthorized");
 			const user = await client.user.findUnique({
 				where: { username: req.body.username },
-				select: { id: true, passwordHash: true, role: true },
+				select: { id: true, passwordHash: true, role: true, username: true },
 			});
 			if (!user) return error(401, "Unauthorized");
 			if (user.passwordHash !== req.body.password)
@@ -63,7 +71,7 @@ const app = new Elysia()
 				secure: true,
 				sameSite: true,
 			});
-			return `Sign in as ${req.cookie.auth.value}`;
+			return { ...user, passwordHash: undefined };
 		},
 		{ body: t.Object({ username: t.String(), password: t.String() }) },
 	)
