@@ -1,7 +1,6 @@
 import {
 	type DefaultError,
 	type QueryClient,
-	type UseMutateFunction,
 	type UseMutationOptions,
 	type UseMutationResult,
 	useMutation,
@@ -17,12 +16,11 @@ export const useSyncMutation = <
 	queryClient?: QueryClient,
 ): UseMutationResult<TData, TError, TVariables, TContext> => {
 	const mutationResults = useMutation(options, queryClient);
-
-	const mutate: UseMutateFunction<TData, TError, TVariables, TContext> = (
-		...params: [TVariables]
-	) => {
-		if (mutationResults.isPending) return;
-		mutationResults.mutate(...params);
+	return {
+		...mutationResults,
+		mutate: (...params: [TVariables]) => {
+			if (mutationResults.isPending) return;
+			mutationResults.mutate(...params);
+		},
 	};
-	return { ...mutationResults, mutate };
 };
