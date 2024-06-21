@@ -19,23 +19,24 @@ export const App = () => {
 			published: true,
 		});
 	};
-	const loginAs = (username: string) => login({ username, password: username });
+	const loginAs = (username: string) =>
+		login.mutate({ username, password: username });
 	return (
 		<>
-			<pre>auth: {JSON.stringify(auth, null, 2)}</pre>
 			<button type="button" onClick={() => inc()}>
 				count is {count}
 			</button>
 			<button type="button" onClick={createRandomPost}>
-				Create random post
+				Creat{createPostMutation.isPending ? "ing" : "e"} random post
 			</button>
 			<button type="button" onClick={() => loginAs("root")}>
-				Login as root
+				Login{login.isPending && "ing"} as root
 			</button>
-			<button type="button" onClick={() => logout()}>
-				Logout
+			<button type="button" onClick={() => logout.mutate()}>
+				Logout{logout.isPending && "ing"}
 			</button>
 			<br />
+			<pre>auth: {JSON.stringify(auth)}</pre>
 			{posts.map((post) => (
 				<div key={post.id}>
 					<h2>
@@ -46,7 +47,7 @@ export const App = () => {
 						type="button"
 						onClick={() => deletePostMutation.mutate(post.id)}
 					>
-						Delete
+						Delete{deletePostMutation.isPending && "ing"}
 					</button>
 				</div>
 			))}

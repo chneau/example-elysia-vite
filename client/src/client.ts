@@ -62,7 +62,7 @@ export const useMutationAuth = () => {
 		deserializer: superjson.parse,
 		serializer: superjson.stringify,
 	});
-	const loginMutation = useMutation({
+	const login = useMutation({
 		mutationKey: ["auth", "login"],
 		mutationFn: (body: LoginBody) =>
 			client.login.post(body).then((x) => {
@@ -71,7 +71,7 @@ export const useMutationAuth = () => {
 			}),
 	});
 
-	const logoutMutation = useMutation({
+	const logout = useMutation({
 		mutationKey: ["auth", "logout"],
 		mutationFn: () =>
 			client.logout.get().then((x) => {
@@ -79,9 +79,5 @@ export const useMutationAuth = () => {
 				return x.data;
 			}),
 	});
-	return {
-		auth,
-		login: loginMutation.mutate,
-		logout: logoutMutation.mutate,
-	};
+	return { auth, login, logout };
 };
