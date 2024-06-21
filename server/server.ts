@@ -6,9 +6,6 @@ import { Elysia, error, t } from "elysia";
 import { compression } from "./compression";
 import { PostInputCreate, PostInputUpdate } from "./prisma/prismabox/Post";
 
-const port = Bun.env.PORT ?? "3000";
-console.log(`Server: http://localhost:${port}`);
-
 const client = new PrismaClient();
 
 (async () => {
@@ -116,6 +113,8 @@ const app = new Elysia()
 		},
 		{ params: t.Object({ id: t.Numeric() }) },
 	)
-	.listen(port);
+	.listen(3000);
+
+console.log("Server: http://localhost:3000");
 
 export type Server = typeof app;
