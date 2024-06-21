@@ -19,9 +19,7 @@ export const App = () => {
 			published: true,
 		});
 	};
-	const loginAs = (username: string) => {
-		login({ username, password: username });
-	};
+	const loginAs = (username: string) => login({ username, password: username });
 	return (
 		<>
 			<pre>auth: {JSON.stringify(auth, null, 2)}</pre>
