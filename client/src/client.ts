@@ -6,6 +6,7 @@ import type { Server } from "../../server/server";
 import { queryClient } from "./queryClient";
 import { useSyncMutation } from "./useSyncMutation";
 
+// @ts-expect-error
 const client = treaty<Server>("localhost:3000", {
 	fetch: { credentials: "include" },
 });
