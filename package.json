@@ -6,6 +6,6 @@
 		"check": "bun run --filter '*' check",
 		"lint": "bun run --filter '*' lint",
 		"gen": "bun run --filter '*' gen",
-		"install": "bun --cwd=client install & bun --cwd=server install & wait ; bun run gen"
+		"install": "bun run --filter '*' installDeps"
 	}
 }

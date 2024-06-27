@@ -5,7 +5,8 @@
 		"dev": "vite",
 		"upgrade": "npm-check-updates --upgrade --install=always --packageManager=bun",
 		"check": "biome check --write --unsafe .",
-		"lint": "tsc --noEmit"
+		"lint": "tsc --noEmit",
+		"installDeps": "bun install"
 	},
 	"dependencies": {
 		"@elysiajs/eden": "^1.0.14",

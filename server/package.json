@@ -6,6 +6,7 @@
 		"upgrade": "npm-check-updates --upgrade --install=always --packageManager=bun",
 		"check": "biome check --write --unsafe .",
 		"lint": "tsc --noEmit",
+		"installDeps": "bun install; bun run gen",
 		"gen": "prisma generate; bun run check; prisma db push"
 	},
 	"dependencies": {
