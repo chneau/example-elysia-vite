@@ -41,9 +41,7 @@ const indexRoute = createRoute({
 const aboutRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: "/about",
-	component: function About() {
-		return <>Hello from About!</>;
-	},
+	component: () => "Hello from About!",
 });
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute]);
