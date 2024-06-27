@@ -29,12 +29,15 @@ export const App = () => {
 			<button type="button" onClick={createRandomPost}>
 				Creat{createPostMutation.isPending ? "ing" : "e"} random post
 			</button>
-			<button type="button" onClick={() => loginAs("root")}>
-				Login{login.isPending && "ing"} as root
-			</button>
-			<button type="button" onClick={() => logout.mutate()}>
-				Logout{logout.isPending && "ing"}
-			</button>
+			{auth ? (
+				<button type="button" onClick={() => logout.mutate()}>
+					Logout{logout.isPending && "ing"}
+				</button>
+			) : (
+				<button type="button" onClick={() => loginAs("root")}>
+					Login{login.isPending && "ing"} as root
+				</button>
+			)}
 			<br />
 			<pre>auth: {JSON.stringify(auth)}</pre>
 			{posts.map((post) => (
