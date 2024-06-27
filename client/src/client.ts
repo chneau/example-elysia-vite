@@ -1,9 +1,8 @@
 import { treaty } from "@elysiajs/eden";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useLocalStorage } from "react-use";
-import superjson from "superjson";
 import type { Server } from "../../server/server";
 import { queryClient } from "./queryClient";
+import { useLS } from "./useHelpers";
 import { useSyncMutation } from "./useSyncMutation";
 
 // @ts-expect-error
@@ -58,11 +57,7 @@ type LoginData = NonNullable<
 	Awaited<ReturnType<typeof client.login.post>>["data"]
 >;
 export const useMutationAuth = () => {
-	const [auth, setAuth] = useLocalStorage<LoginData | null>("auth", null, {
-		raw: false,
-		deserializer: superjson.parse,
-		serializer: superjson.stringify,
-	});
+	const [auth, setAuth] = useLS<LoginData | null>("auth", null);
 	const login = useMutation({
 		mutationKey: ["auth", "login"],
 		mutationFn: (body: LoginBody) =>
