@@ -1,9 +1,10 @@
 import { treaty } from "@elysiajs/eden";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { QueryClient } from "@tanstack/react-query";
 import type { Server } from "../../server/server";
-import { queryClient } from "./queryClient";
-import { useLS } from "./useHelpers";
-import { useSyncMutation } from "./useSyncMutation";
+import { useLS, useSyncMutation } from "./useHelpers";
+
+export const queryClient = new QueryClient();
 
 // @ts-expect-error
 const client = treaty<Server>("localhost:3000", {

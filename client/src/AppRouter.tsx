@@ -11,8 +11,8 @@ import {
 	createRouter,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { App } from "./App";
-import { queryClient } from "./queryClient";
+import { IndexPage } from "./IndexPage";
+import { queryClient } from "./client";
 
 const localStoragePersister = createSyncStoragePersister({
 	storage: window.localStorage,
@@ -35,7 +35,7 @@ const rootRoute = createRootRoute({
 const indexRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: "/",
-	component: App,
+	component: IndexPage,
 });
 
 const aboutRoute = createRoute({

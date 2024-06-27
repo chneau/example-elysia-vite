@@ -6,7 +6,7 @@ import {
 	useQueryPosts,
 } from "./client";
 
-export const App = () => {
+export const IndexPage = () => {
 	const [count, { inc }] = useCounter();
 	const { data: posts } = useQueryPosts();
 	const createPostMutation = useMutationCreatePost();
