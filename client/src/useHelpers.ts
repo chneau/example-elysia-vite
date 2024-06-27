@@ -9,8 +9,8 @@ import { useLocalStorage } from "react-use";
 import superjson from "superjson";
 
 type useLocalStorageParams<T> = Parameters<typeof useLocalStorage<T>>;
-type useLS<T> = [useLocalStorageParams<T>[0], useLocalStorageParams<T>[1]];
-export const useLS = <T>(...args: useLS<T>) => {
+type useLSArgs<T> = [useLocalStorageParams<T>[0], useLocalStorageParams<T>[1]];
+export const useLS = <T>(...args: useLSArgs<T>) => {
 	const [value, setValue] = useLocalStorage<T>(...args, {
 		raw: false,
 		deserializer: superjson.parse,
