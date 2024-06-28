@@ -1,13 +1,17 @@
 import Elysia from "elysia";
 
-export const logging = () => {
+export const logging = ({
+	loggingMethods = ["GET", "PUT", "POST", "DELETE"],
+} = {}) => {
 	return new Elysia()
-		.derive({ as: "global" }, (ctx) => {
+		.derive({ as: "global" }, () => ({ start: Date.now() }))
+		.onBeforeHandle({ as: "global" }, (ctx) => {
+			if (!loggingMethods.includes(ctx.request.method)) return;
 			console.log("<--", ctx.request.method, ctx.path);
-			return { start: Date.now() };
 		})
 		.onResponse({ as: "global" }, (ctx) => {
-			return console.log(
+			if (!loggingMethods.includes(ctx.request.method)) return;
+			console.log(
 				"-->",
 				ctx.request.method,
 				ctx.path,
