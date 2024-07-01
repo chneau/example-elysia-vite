@@ -14,12 +14,12 @@
 		"@elysiajs/jwt": "^1.0.2",
 		"@elysiajs/server-timing": "^1.0.2",
 		"@prisma/client": "^5.16.1",
-		"elysia": "^1.0.25",
+		"elysia": "^1.0.26",
 		"prisma": "^5.16.1"
 	},
 	"devDependencies": {
 		"@types/bun": "^1.1.6",
 		"prismabox": "^1.1.2",
-		"typescript": "^5.5.2"
+		"typescript": "^5.5.3"
 	}
 }
