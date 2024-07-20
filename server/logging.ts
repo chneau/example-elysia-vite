@@ -9,7 +9,7 @@ export const logging = ({
 			if (!loggingMethods.includes(ctx.request.method)) return;
 			console.log("<--", ctx.request.method, ctx.path);
 		})
-		.onResponse({ as: "global" }, (ctx) => {
+		.onAfterHandle({ as: "global" }, (ctx) => {
 			if (!loggingMethods.includes(ctx.request.method)) return;
 			console.log(
 				"-->",
