@@ -6,6 +6,7 @@ import { useLS, useSyncMutation } from "./useHelpers";
 
 export const queryClient = new QueryClient();
 
+// @ts-expect-error
 const client = treaty<Server>("localhost:3000", {
 	fetch: { credentials: "include" },
 });

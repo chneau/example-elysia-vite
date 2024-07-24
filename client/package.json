@@ -11,21 +11,21 @@
 	"dependencies": {
 		"@elysiajs/eden": "^1.1.1",
 		"@tanstack/query-sync-storage-persister": "^5.51.9",
-		"@tanstack/react-query": "^5.51.9",
-		"@tanstack/react-query-devtools": "^5.51.9",
-		"@tanstack/react-query-persist-client": "^5.51.9",
-		"@tanstack/react-router": "^1.45.6",
+		"@tanstack/react-query": "^5.51.11",
+		"@tanstack/react-query-devtools": "^5.51.11",
+		"@tanstack/react-query-persist-client": "^5.51.11",
+		"@tanstack/react-router": "^1.45.8",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"react-use": "^17.5.0",
+		"react-use": "^17.5.1",
 		"superjson": "^2.2.1"
 	},
 	"devDependencies": {
-		"@tanstack/router-devtools": "^1.45.6",
+		"@tanstack/router-devtools": "^1.45.8",
 		"@types/react": "^18.3.3",
 		"@types/react-dom": "^18.3.0",
 		"@vitejs/plugin-react": "^4.3.1",
-		"typescript": "^5.5.3",
+		"typescript": "^5.5.4",
 		"vite": "^5.3.4"
 	}
 }
