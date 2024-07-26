@@ -1,9 +1,9 @@
+import { compression } from "@chneau/elysia-compression";
 import cors from "@elysiajs/cors";
 import jwt from "@elysiajs/jwt";
 import { serverTiming } from "@elysiajs/server-timing";
 import { PrismaClient } from "@prisma/client";
 import { Elysia, error, t } from "elysia";
-import { compression } from "./compression";
 import { logging } from "./logging";
 import { PostInputCreate, PostInputUpdate } from "./prisma/prismabox/Post";
 
